@@ -25,7 +25,7 @@ void FinancialAsset::simulateMultipleAssets(unsigned N,  double s_0 , double ** 
     brownianMotions[i]= new double[_M];
   }
 
-  simulateMultipleBrownianMotion(_T, _delta_t, _M, N, brownianMotions);
+  simulateMultipleBrownianMotions(_T, _delta_t, _M, N, brownianMotions);
 
 
   for (unsigned j = 0; j < _M; j ++) {

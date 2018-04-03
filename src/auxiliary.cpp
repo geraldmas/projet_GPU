@@ -40,7 +40,7 @@ void brownianMotion(double T, double delta_t, unsigned M,double* res) {
 
 }
 
-void simulateMultipleBrownianMotion(double T,  double delta_t, unsigned M,  unsigned N, double ** res) {
+void simulateMultipleBrownianMotions(double T,  double delta_t, unsigned M,  unsigned N, double ** res) {
 
   for (unsigned i = 0; i < N; i++) {
     brownianMotion(T, delta_t, M, res[i]);
