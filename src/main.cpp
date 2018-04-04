@@ -18,6 +18,8 @@ int main (int argc, char *argv[]) {
 
 	unsigned N = 100;
 	double s_0 = 2;
+	bool testing_mode = false;
+	unsigned nb_test = 1;
 
 	for (int i = 1; i < argc; ++i) {
 		if (string(argv[i]) == "-N") {
@@ -32,11 +34,24 @@ int main (int argc, char *argv[]) {
 				s_0 = stod(argv[i]);
 			}
 		}
+
+		if (string(argv[i]) == "-t" || string(argv[i]) == "--test") {
+			if (i+1 < argc) {
+				i++
+				nb_test = atoi(argv[i])
+			}
+		}
 	}
 
 	FinancialAsset* asset = new FinancialAsset(&a_FA);
 
+	if (!testing_mode) {
 	cout << "Estimated initial value : " << asset->estimateFinalValue(N, s_0) << endl;
 	cout << "Exact solution : " << asset->exactSolution(s_0, 0) << endl;
+	}
+	else {
+		// asset->testing(...)
+	}
+
 	return 0;
 }
