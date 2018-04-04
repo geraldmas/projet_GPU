@@ -44,6 +44,8 @@ double FinancialAsset::estimateFinalValue(unsigned N, double s_0) {
 	return exp(-_r*_T)*res/N;
 }
 
+// calcul variance intervalle de confiance
+
 double FinancialAsset::exactSolution(double s_0, double t) {
 	// ici une correction de mon erreur de l'énoncé: permuter d1 et d2
 	double d_1 = (log(s_0/_K)+((_r-_D)+_sigma*_sigma/2)*(_T-t))/(_sigma*sqrt(_T-t));

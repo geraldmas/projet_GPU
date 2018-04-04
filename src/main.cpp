@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include "../includes/FinancialAsset.h"
 
 using namespace std;
@@ -37,21 +38,23 @@ int main (int argc, char *argv[]) {
 
 		if (string(argv[i]) == "-t" || string(argv[i]) == "--test") {
 			if (i+1 < argc) {
-				i++
-				nb_test = atoi(argv[i])
+				i++;
+				nb_test = atoi(argv[i]);
 			}
 		}
 	}
 
 	FinancialAsset* asset = new FinancialAsset(&a_FA);
 
-	if (!testing_mode) {
-	cout << "Estimated initial value : " << asset->estimateFinalValue(N, s_0) << endl;
-	cout << "Exact solution : " << asset->exactSolution(s_0, 0) << endl;
-	}
-	else {
-		// asset->testing(...)
-	}
+	ofstream file("output/results2.csv");
+
+		N = 100;
+		for (unsigned i = 0; i < 10000; i++) {
+			double res = asset->estimateFinalValue(N, s_0);
+			cout << "N : " << N << " "; 
+			cout << "Estimated initial value : " << res << endl;
+			file << N << "," << res << endl;
+		}
 
 	return 0;
 }
