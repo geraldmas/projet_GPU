@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/Users/geraldmas/MAS_gpu_project_corrigé/src/auxiliary.cpp" "/Users/geraldmas/MAS_gpu_project_corrigé/CMakeFiles/BS_Monte_Carlo.dir/src/auxiliary.cpp.o"
   "/Users/geraldmas/MAS_gpu_project_corrigé/src/main.cpp" "/Users/geraldmas/MAS_gpu_project_corrigé/CMakeFiles/BS_Monte_Carlo.dir/src/main.cpp.o"
   )
-set(CMAKE_CXX_COMPILER_ID "Clang")
+set(CMAKE_CXX_COMPILER_ID "GNU")
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH

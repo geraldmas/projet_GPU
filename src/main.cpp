@@ -37,8 +37,8 @@ int main (int argc, char *argv[]) {
 
 		if (string(argv[i]) == "-t" || string(argv[i]) == "--test") {
 			if (i+1 < argc) {
-				i++
-				nb_test = atoi(argv[i])
+				i++;
+				nb_test = atoi(argv[i]);
 			}
 		}
 	}
@@ -46,12 +46,37 @@ int main (int argc, char *argv[]) {
 	FinancialAsset* asset = new FinancialAsset(&a_FA);
 
 	if (!testing_mode) {
-	cout << "Estimated initial value : " << asset->estimateFinalValue(N, s_0) << endl;
-	cout << "Exact solution : " << asset->exactSolution(s_0, 0) << endl;
+		asset->tic();
+
+		double * res = asset->estimateFinalValue(N, s_0);
+
+		cout << " ****** ****** ****** ****** ****** ****** *****" << endl;
+		cout << "Computing asset value with Monte-Carlo method using following parameters : " << endl;
+		cout << "Number of experiments : " << N << endl;
+		cout << "Initial price : " << s_0 << endl;
+		cout << "Spatial length : " << a_FA.L << endl; 
+		cout << "Temporal length : " << a_FA.T << endl;
+		cout << "Ulterior price : " << a_FA.K << endl;
+		cout << "Interest rate : " << a_FA.r << endl;
+		cout << "Volatility : " << a_FA.sigma << endl;
+		cout << "Dividend : " << a_FA.D << endl;
+		cout << "Temporal points for discretization : " << a_FA.Nb << endl;
+		cout << " ****** ****** ****** ****** ****** ****** *****" << endl;
+		cout << "Exact solution : " << asset->exactSolution(s_0, 0) << endl;
+		cout << " ****** ****** ****** ****** ****** ****** *****" << endl;
+		cout << "Estimated initial value : " << res[0] << endl;
+		cout << "Estimated standard deviation : " << res[1] << endl;
+		cout << "Confidence interval (0.95%) : [" << res[2] << ", " << res[3] << "]" << endl;
+		cout << " ****** ****** ****** ****** ****** ****** *****" << endl;
+
+		double elapsed_time = asset->toc(1);
+		cout << "Elapsed time : " << elapsed_time << endl;
+
 	}
 	else {
 		// asset->testing(...)
 	}
+
 
 	return 0;
 }
