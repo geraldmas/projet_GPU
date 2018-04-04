@@ -45,7 +45,7 @@ double * FinancialAsset::estimateFinalValue(unsigned N, double s_0) {
 		sum_squared += pow(fmax(A[i][_M-1]-_K, 0.0), 2);
 	}
 	res[0] = exp(-_r*_T)*sum/N;
-	res[1] = exp(-_r*_T)*sqrt(sum_squared/N-pow(sum/N, 2));
+	res[1] = exp(-_r*_T)*sqrt((sum_squared/N-pow(sum/N, 2))*(N/(N-1)));
 	res[2] = res[0]-1.96*res[1]/sqrt(N);
 	res[3] = res[0]+1.96*res[1]/sqrt(N);
 	return res;
