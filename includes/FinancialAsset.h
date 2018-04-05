@@ -8,7 +8,7 @@
 
 struct arguments_FA {
 	double r, sigma, T, L, K, D;
-	unsigned int	Nb;
+	unsigned int Nb;
 };
 
 class FinancialAsset

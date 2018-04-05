@@ -1,3 +1,0 @@
-/Users/geraldmas/MAS_gpu_project_corrigé/CMakeFiles/rebuild_cache.dir
-/Users/geraldmas/MAS_gpu_project_corrigé/CMakeFiles/edit_cache.dir
-/Users/geraldmas/MAS_gpu_project_corrigé/CMakeFiles/BS_Monte_Carlo.dir
