@@ -26,11 +26,12 @@ void FinancialAsset::simulateMultipleAssets(unsigned N, double s_0 , double ** r
 	}
 
 	simulateMultipleBrownianMotions(_T, _delta_t, _M, N, brownianMotions, antithetic_variates, numthreads);
-	// paralléliser sur i 
-	for (unsigned j = 0; j < _M; j ++) {
-		t = j*_delta_t;
-		for (unsigned i = 0; i < n; i ++) {
+
+	# pragma omp for num_threads(numthreads)
+	for (unsigned i = 0; i < n; i++) {
+		for (unsigned j = 0; j < _M; j++) {
 			res[i][j] = s_0 * exp((_r -_D-pow(_sigma, 2)/2.0)*t+_sigma*brownianMotions[i][j]);
+			t = j*_delta_t;
 		}
 	}
 }
