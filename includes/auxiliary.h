@@ -4,6 +4,7 @@
 #include <cmath>
 #include <random>
 #include <iostream>
+#include <omp.h>
 
 inline double kappa(double x);
 

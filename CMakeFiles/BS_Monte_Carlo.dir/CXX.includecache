@@ -23,6 +23,8 @@ random
 -
 iostream
 -
+omp.h
+-
 
 /Users/geraldmas/MAS_gpu_project_corrigé/src/FinancialAsset.cpp
 ../includes/FinancialAsset.h
