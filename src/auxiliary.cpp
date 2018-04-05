@@ -13,11 +13,10 @@ double normalRepartition(double x) {
 	const double a_5 = 1.330274429;
 double k=kappa(x);
 	if (x >= 0) {
-		return 1 - exp(-x*x/2)/sqrt(2*M_PI)*(a_1*k+a_2*pow(k,2)+a_3*pow(k,3)+a_4*pow(k,4)+a_5*pow(k,5));
+		return 1.0 - exp(-x*x/2)/sqrt(2*M_PI)*(a_1*k+a_2*pow(k,2)+a_3*pow(k,3)+a_4*pow(k,4)+a_5*pow(k,5));
 	}
 	else {
-			// correction ici pour la formule de la loi Normale
-		return 1.0-normalRepartition(-x);
+		return 1.0 - normalRepartition(-x);
 	}
 }
 
@@ -35,10 +34,18 @@ void brownianMotion(double T, double delta_t, unsigned M,double* res) {
 
 }
 
-void simulateMultipleBrownianMotions(double T,	double delta_t, unsigned M,	unsigned N, double ** res) {
+void simulateMultipleBrownianMotions(double T,	double delta_t, unsigned M,	unsigned N, double ** res, bool antithetic_variates) {
 
 	for (unsigned i = 0; i < N; i++) {
 		brownianMotion(T, delta_t, M, res[i]);
 	}
+
+    if (antithetic_variates) {
+        for (unsigned i = 0; i < N; i++) {
+            for (unsigned j = 0; j < M; j++) {
+                res[i+N][j] = -res[i][j];
+            }
+        }
+    }
 
 }

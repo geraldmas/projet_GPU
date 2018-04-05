@@ -21,8 +21,8 @@ private:
 public:
 	FinancialAsset(arguments_FA* a_FA);
 	~FinancialAsset();
-	 void	simulateMultipleAssets(unsigned N,	 double s_0 , double ** res);
-	double * estimateFinalValue(unsigned N, double s_0);
+	void simulateMultipleAssets(unsigned N,	 double s_0 , double ** res, bool antithetic_variates);
+	double * estimateFinalValue(unsigned N, double s_0, bool antithetic_variates);
 	double exactSolution(double s_0, double t);
 
 	void tic();
