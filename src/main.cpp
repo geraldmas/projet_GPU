@@ -16,8 +16,6 @@ int main (int argc, char *argv[]) {
 		a_FA.Nb = 100;
 	}
 
-	// AJOUTER RÉDUCTIONS
-
 	unsigned N = 100;
 	double s_0 = 2;
 	bool testing_mode = false;
