@@ -22,7 +22,7 @@ void FinancialAsset::simulateMultipleAssets(unsigned N, double s_0 , double ** r
 
 	# pragma omp parallel for num_threads(numthreads) 
 	for (unsigned i = 0; i < n; i ++) {
-		brownianMotions[i]= new double[_M];
+		brownianMotions[i] = new double[_M];
 	}
 
 	simulateMultipleBrownianMotions(_T, _delta_t, _M, N, brownianMotions, antithetic_variates, numthreads);
@@ -30,8 +30,8 @@ void FinancialAsset::simulateMultipleAssets(unsigned N, double s_0 , double ** r
 	# pragma omp parallel for num_threads(numthreads)  
 	for (unsigned i = 0; i < n; i++) {
 		for (unsigned j = 0; j < _M; j++) {
-			res[i][j] = s_0 * exp((_r -_D-pow(_sigma, 2)/2.0)*t+_sigma*brownianMotions[i][j]);
 			t = j*_delta_t;
+			res[i][j] = s_0 * exp((_r -_D-pow(_sigma, 2)/2.0)*t+_sigma*brownianMotions[i][j]);
 		}
 	}
 }
@@ -43,13 +43,13 @@ double * FinancialAsset::estimateFinalValue(unsigned N, double s_0, bool antithe
 
 	# pragma omp parallel for num_threads(numthreads) 
 	for (unsigned i = 0; i < n; i ++) {
-		A[i]= new double[_M];
+		A[i] = new double[_M];
 	}
 	simulateMultipleAssets(N, s_0, A, antithetic_variates, numthreads);
 	double sum = 0;
 	double sum_squared = 0;
 
-	# pragma omp parallel for num_threads(numthreads) 
+	# pragma omp parallel for num_threads(numthreads) reduction(+:sum, sum_squared)
 	for (unsigned i = 0; i < n; i++) {
 		sum += fmax(A[i][_M-1]-_K, 0.0);
 		sum_squared += pow(fmax(A[i][_M-1]-_K, 0.0), 2);
@@ -70,29 +70,29 @@ double FinancialAsset::exactSolution(double s_0, double t) {
 
 void FinancialAsset::tic()
 {
-  double t1;
-  gettimeofday(&s_time,NULL);
-  t1=s_time.tv_sec+(s_time.tv_usec/1000000.0);
-  tictoc_stack.push_back(t1);
-  return;
+	double t1;
+	gettimeofday(&s_time,NULL);
+	t1=s_time.tv_sec+(s_time.tv_usec/1000000.0);
+	tictoc_stack.push_back(t1);
+	return;
 }
 
 double FinancialAsset::toc(bool test)
 {
   // time counter since last tic() / not to use in a pragma command
-  if(tictoc_stack.empty()){
-    printf("Error! No previous tic function call recorded\n");
-    return -1.;
-  }
-  else {
-    double t1;
-    gettimeofday(&s_time,NULL);
-    t1=s_time.tv_sec+(s_time.tv_usec/1000000.0);
-    double timer = (double)((t1-tictoc_stack.back()));
-    if(test==0)
-      tictoc_stack.pop_back();
-    return timer;
-  }
+	if(tictoc_stack.empty()){
+		printf("Error! No previous tic function call recorded\n");
+    	return -1.;
+  	}
+	else {
+	    double t1;
+		gettimeofday(&s_time,NULL);
+		t1=s_time.tv_sec+(s_time.tv_usec/1000000.0);
+		double timer = (double)((t1-tictoc_stack.back()));
+		if(test==0)
+			tictoc_stack.pop_back();
+		return timer;
+	}
 }
 
 
