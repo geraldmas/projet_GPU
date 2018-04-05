@@ -20,14 +20,14 @@ void FinancialAsset::simulateMultipleAssets(unsigned N, double s_0 , double ** r
 	double ** brownianMotions = new double *[n];
 	double t;
 
-	# pragma omp for num_threads(numthreads)
+	# pragma omp num_threads(numthreads) for
 	for (unsigned i = 0; i < n; i ++) {
 		brownianMotions[i]= new double[_M];
 	}
 
 	simulateMultipleBrownianMotions(_T, _delta_t, _M, N, brownianMotions, antithetic_variates, numthreads);
 
-	# pragma omp for num_threads(numthreads)
+	# pragma omp num_threads(numthreads) for 
 	for (unsigned i = 0; i < n; i++) {
 		for (unsigned j = 0; j < _M; j++) {
 			res[i][j] = s_0 * exp((_r -_D-pow(_sigma, 2)/2.0)*t+_sigma*brownianMotions[i][j]);
@@ -41,7 +41,7 @@ double * FinancialAsset::estimateFinalValue(unsigned N, double s_0, bool antithe
 	double ** A = new double *[n];
 	double * res = new double[4];
 
-	# pragma omp for num_threads(numthreads)
+	# pragma omp num_threads(numthreads) for
 	for (unsigned i = 0; i < n; i ++) {
 		A[i]= new double[_M];
 	}
@@ -49,7 +49,7 @@ double * FinancialAsset::estimateFinalValue(unsigned N, double s_0, bool antithe
 	double sum = 0;
 	double sum_squared = 0;
 
-	# pragma omp for num_threads(numthreads)
+	# pragma omp num_threads(numthreads) for
 	for (unsigned i = 0; i < n; i++) {
 		sum += fmax(A[i][_M-1]-_K, 0.0);
 		sum_squared += pow(fmax(A[i][_M-1]-_K, 0.0), 2);
