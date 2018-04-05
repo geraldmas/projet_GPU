@@ -34,13 +34,15 @@ void brownianMotion(double T, double delta_t, unsigned M,double* res) {
 
 }
 
-void simulateMultipleBrownianMotions(double T,	double delta_t, unsigned M,	unsigned N, double ** res, bool antithetic_variates) {
+void simulateMultipleBrownianMotions(double T,	double delta_t, unsigned M,	unsigned N, double ** res, bool antithetic_variates, unsigned numthreads) {
 
+    # pragma omp for 
 	for (unsigned i = 0; i < N; i++) {
 		brownianMotion(T, delta_t, M, res[i]);
 	}
 
     if (antithetic_variates) {
+    # pragma omp for collapse(2) num_threads(numthreads)
         for (unsigned i = 0; i < N; i++) {
             for (unsigned j = 0; j < M; j++) {
                 res[i+N][j] = -res[i][j];

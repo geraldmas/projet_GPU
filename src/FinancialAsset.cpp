@@ -14,15 +14,18 @@ FinancialAsset::FinancialAsset(arguments_FA* a_FA)
 	_delta_t = _T/(_M-1);
 }
 
-void FinancialAsset::simulateMultipleAssets(unsigned N, double s_0 , double ** res, bool antithetic_variates) 
+void FinancialAsset::simulateMultipleAssets(unsigned N, double s_0 , double ** res, bool antithetic_variates, unsigned numthreads) 
 {
 	unsigned n = antithetic_variates ? 2*N : N;
 	double ** brownianMotions = new double *[n];
 	double t;
+
+	# pragma omp for num_threads(numthreads)
 	for (unsigned i = 0; i < n; i ++) {
 		brownianMotions[i]= new double[_M];
 	}
-	simulateMultipleBrownianMotions(_T, _delta_t, _M, N, brownianMotions, antithetic_variates);
+
+	simulateMultipleBrownianMotions(_T, _delta_t, _M, N, brownianMotions, antithetic_variates, numthreads);
 	// paralléliser sur i 
 	for (unsigned j = 0; j < _M; j ++) {
 		t = j*_delta_t;
@@ -32,28 +35,31 @@ void FinancialAsset::simulateMultipleAssets(unsigned N, double s_0 , double ** r
 	}
 }
 
-double * FinancialAsset::estimateFinalValue(unsigned N, double s_0, bool antithetic_variates) {
+double * FinancialAsset::estimateFinalValue(unsigned N, double s_0, bool antithetic_variates, unsigned numthreads) {
 	unsigned n = antithetic_variates ? 2*N : N;
 	double ** A = new double *[n];
 	double * res = new double[4];
+
+	# pragma omp for num_threads(numthreads)
 	for (unsigned i = 0; i < n; i ++) {
 		A[i]= new double[_M];
 	}
-	simulateMultipleAssets(N, s_0, A, antithetic_variates);
+	simulateMultipleAssets(N, s_0, A, antithetic_variates, numthreads);
 	double sum = 0;
 	double sum_squared = 0;
+
+	# pragma omp for num_threads(numthreads)
 	for (unsigned i = 0; i < n; i++) {
 		sum += fmax(A[i][_M-1]-_K, 0.0);
 		sum_squared += pow(fmax(A[i][_M-1]-_K, 0.0), 2);
 	}
+
 	res[0] = exp(-_r*_T)*sum/n;
 	res[1] = exp(-_r*_T)*sqrt((sum_squared/n-pow(sum/n, 2))*(n/(n-1)));
 	res[2] = res[0]-1.96*res[1]/sqrt(n);
 	res[3] = res[0]+1.96*res[1]/sqrt(n);
 	return res;
 }
-
-// calcul variance intervalle de confiance
 
 double FinancialAsset::exactSolution(double s_0, double t) {
 	double d_1 = (log(s_0/_K)+((_r-_D)+_sigma*_sigma/2)*(_T-t))/(_sigma*sqrt(_T-t));

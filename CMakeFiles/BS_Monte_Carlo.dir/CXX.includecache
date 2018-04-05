@@ -13,6 +13,8 @@ ctime
 -
 sys/time.h
 -
+omp.h
+-
 
 /Users/geraldmas/MAS_gpu_project_corrigé/includes/auxiliary.h
 cmath

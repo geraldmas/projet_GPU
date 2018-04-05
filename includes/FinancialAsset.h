@@ -4,6 +4,7 @@
 #include "auxiliary.h"
 #include <ctime>
 #include <sys/time.h>
+#include <omp.h>
 
 struct arguments_FA {
 	double r, sigma, T, L, K, D;
@@ -21,8 +22,8 @@ private:
 public:
 	FinancialAsset(arguments_FA* a_FA);
 	~FinancialAsset();
-	void simulateMultipleAssets(unsigned N,	 double s_0 , double ** res, bool antithetic_variates);
-	double * estimateFinalValue(unsigned N, double s_0, bool antithetic_variates);
+	void simulateMultipleAssets(unsigned N,	 double s_0 , double ** res, bool antithetic_variates, unsigned numthreads);
+	double * estimateFinalValue(unsigned N, double s_0, bool antithetic_variates, unsigned numthreads);
 	double exactSolution(double s_0, double t);
 
 	void tic();

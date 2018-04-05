@@ -11,6 +11,6 @@ double normalRepartition(double x);
 
 void	brownianMotion(double T,double, unsigned M, double *);
 
-void simulateMultipleBrownianMotions(double T, double delta_t,	unsigned M, unsigned N, double ** res, bool antithetic_variates);
+void simulateMultipleBrownianMotions(double T, double delta_t,	unsigned M, unsigned N, double ** res, bool antithetic_variates, unsigned numthreads);
 
 #endif

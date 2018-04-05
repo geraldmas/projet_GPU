@@ -21,6 +21,7 @@ int main (int argc, char *argv[]) {
 	bool testing_mode = false;
 	unsigned nb_test = 1;
 	bool antithetic_variates = false;
+	unsigned numthreads = 1;
 
 	for (int i = 1; i < argc; ++i) {
 		if (string(argv[i]) == "-N") {
@@ -38,18 +39,30 @@ int main (int argc, char *argv[]) {
 		if (string(argv[i]) == "--antithetic" || string(argv[i]) == "-a") {
 			antithetic_variates = true;
 		}
+		if (string(argv[i]) == "--numthreads" || string(argv[i]) == "-n") {
+			if (i+1 < argc) {
+				i++;
+				numthreads = atoi(argv[i]);
+			}
+		}
 	}
 
 	FinancialAsset* asset = new FinancialAsset(&a_FA);
 
 	asset->tic();
 
-	double * res = asset->estimateFinalValue(N, s_0, antithetic_variates);
+	double * res = asset->estimateFinalValue(N, s_0, antithetic_variates, numthreads);
 
 	cout << endl << " ****** ****** ****** ****** ****** ****** *****" << endl << endl;
 
 	cout << "Computing asset value with Monte-Carlo method using following parameters : " << endl;
 	cout << " - Number of experiments : " << N << endl;
+	if (numthreads > 1) {
+		cout << " - Using OpenMP with " << numthreads << " threads" << endl;
+	}
+	else {
+		cout << " - Not using OpenMP" << endl;
+	}
 	cout << " - Initial price : " << s_0 << endl;
 	cout << " - Spatial length : " << a_FA.L << endl; 
 	cout << " - Temporal length : " << a_FA.T << endl;
