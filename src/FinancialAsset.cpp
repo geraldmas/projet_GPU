@@ -39,7 +39,7 @@ void FinancialAsset::simulateMultipleAssets(unsigned N, double s_0 , double ** r
 double * FinancialAsset::estimateFinalValue(unsigned N, double s_0, bool antithetic_variates, unsigned numthreads) {
 	unsigned n = antithetic_variates ? 2*N : N;
 	double ** A = new double *[n];
-	double * res = new double[4];
+	double * res = new double[5];
 
 	# pragma omp parallel for num_threads(numthreads) 
 	for (unsigned i = 0; i < n; i ++) {
