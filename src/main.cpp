@@ -56,13 +56,13 @@ int main (int argc, char *argv[]) {
 	cout << endl << " ****** ****** ****** ****** ****** ****** *****" << endl << endl;
 
 	cout << "Computing asset value with Monte-Carlo method using following parameters : " << endl;
-	cout << " - Number of experiments : " << N << endl;
 	if (numthreads > 1) {
 		cout << " - Using OpenMP with " << numthreads << " threads" << endl;
 	}
 	else {
 		cout << " - Not using OpenMP" << endl;
 	}
+	cout << " - Number of experiments : " << N << endl;
 	cout << " - Initial price : " << s_0 << endl;
 	cout << " - Spatial length : " << a_FA.L << endl; 
 	cout << " - Temporal length : " << a_FA.T << endl;
@@ -84,8 +84,9 @@ int main (int argc, char *argv[]) {
 	cout << "Estimated standard deviation : " << res[1] << endl;
 	cout << "Confidence interval (0.95%) : [" << res[2] << ", " << res[3] << "]" << endl << endl;
 	
-	cout << "Error (absolute) : " << res[0]-asset->exactSolution(s_0, 0) << endl;
-	cout << "Error (relative) : " << 100*(res[0]/asset->exactSolution(s_0, 0)-1) << "%" << endl << endl;
+	cout << "Price error (absolute) : " << res[0]-asset->exactSolution(s_0, 0) << endl;
+	cout << "Price error (relative) : " << 100*(res[0]/asset->exactSolution(s_0, 0)-1) << "%" << endl;
+	cout << "Total error (L_infty norm) : " << res[4] << endl << endl;
 
 	cout << " ****** ****** ****** ****** ****** ****** *****" << endl << endl;
 

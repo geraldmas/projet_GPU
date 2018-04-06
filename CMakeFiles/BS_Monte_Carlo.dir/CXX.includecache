@@ -1,0 +1,42 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/geraldmas/MAS_gpu_project_corrigé/includes/FinancialAsset.h
+auxiliary.h
+/Users/geraldmas/MAS_gpu_project_corrigé/includes/auxiliary.h
+ctime
+-
+sys/time.h
+-
+omp.h
+-
+
+/Users/geraldmas/MAS_gpu_project_corrigé/includes/auxiliary.h
+cmath
+-
+random
+-
+iostream
+-
+omp.h
+-
+
+/Users/geraldmas/MAS_gpu_project_corrigé/src/FinancialAsset.cpp
+../includes/FinancialAsset.h
+/Users/geraldmas/MAS_gpu_project_corrigé/includes/FinancialAsset.h
+
+/Users/geraldmas/MAS_gpu_project_corrigé/src/auxiliary.cpp
+../includes/auxiliary.h
+/Users/geraldmas/MAS_gpu_project_corrigé/includes/auxiliary.h
+
+/Users/geraldmas/MAS_gpu_project_corrigé/src/main.cpp
+iostream
+-
+../includes/FinancialAsset.h
+/Users/geraldmas/MAS_gpu_project_corrigé/includes/FinancialAsset.h
+

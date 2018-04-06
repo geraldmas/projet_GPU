@@ -46,19 +46,34 @@ double * FinancialAsset::estimateFinalValue(unsigned N, double s_0, bool antithe
 		A[i] = new double[_M];
 	}
 	simulateMultipleAssets(N, s_0, A, antithetic_variates, numthreads);
-	double sum = 0;
+	double * sum = new double[_M];
 	double sum_squared = 0;
+	double error = 0;
+	double t = 0;
 
-	# pragma omp parallel for num_threads(numthreads) reduction(+:sum, sum_squared)
+
+	for (unsigned j = 0; j < _M; j++) {
+		# pragma omp parallel for num_threads(numthreads) reduction(+:sum[j], sum_squared)
+		for (unsigned i = 0; i < n; i++) {
+			sum[j] += fmax(A[i][j]-_K, 0.0);
+		}
+	}
+
 	for (unsigned i = 0; i < n; i++) {
-		sum += fmax(A[i][_M-1]-_K, 0.0);
 		sum_squared += pow(fmax(A[i][_M-1]-_K, 0.0), 2);
 	}
 
-	res[0] = exp(-_r*_T)*sum/n;
-	res[1] = exp(-_r*_T)*sqrt((sum_squared/n-pow(sum/n, 2))*(n/(n-1)));
+	# pragma omp parallel for num_threads(numthreads) reduction(max: error) 
+	for (unsigned j = 0; j < _M; j++) {
+		t = j*_delta_t;
+		error = max(error, abs(exactSolution(s_0, _T-t)-exp(-_r*(_T-t))*sum[j]/n));
+	}
+
+	res[0] = exp(-_r*_T)*sum[_M-1]/n;
+	res[1] = exp(-_r*_T)*sqrt((sum_squared/n-pow(sum[_M-1]/n, 2))*(n/(n-1)));
 	res[2] = res[0]-1.96*res[1]/sqrt(n);
 	res[3] = res[0]+1.96*res[1]/sqrt(n);
+	res[4] = error;
 	return res;
 }
 
