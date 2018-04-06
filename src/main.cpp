@@ -79,7 +79,7 @@ int main (int argc, char *argv[]) {
 	cout << " ****** ****** ****** ****** ****** ****** *****" << endl << endl;
 
 	cout << "Exact solution : " << asset->exactSolution(s_0, 0) << endl << endl;
-	cout << "Estimated value : " << res[0] << endl;
+	cout << "Estimated expected value : " << res[0] << endl;
 
 	cout << "Estimated standard deviation : " << res[1] << endl;
 	cout << "Confidence interval (0.95%) : [" << res[2] << ", " << res[3] << "]" << endl << endl;
